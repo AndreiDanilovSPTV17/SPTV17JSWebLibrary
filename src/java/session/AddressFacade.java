@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package session;
 
 import entity.Address;
@@ -7,12 +12,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author user
+ * @author dotkaseledka1
  */
 @Stateless
 public class AddressFacade extends AbstractFacade<Address> {
 
-    @PersistenceContext(unitName = "SPTV17WebLibrary2PU")
+    @PersistenceContext(unitName = "SPTV17JSWebLibraryPU")
     private EntityManager em;
 
     @Override
