@@ -1,44 +1,22 @@
-package jsoncreator;
+package jsonbuilders;
 
-import entity.Address;
-import entity.Customer;
-import java.util.List;
+import entity.User;
 import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
-/**
- *
- * @author user
- */
-public class CustomerJsonBuilder {
-    public JsonObject createJsonObject(Customer customer){
-       JsonObjectBuilder job = Json.createObjectBuilder();
-          job.add("id",customer.getId())
-            .add("firstname",customer.getFirstname())
-            .add("lastname",customer.getLastname())
-            .add("email",customer.getEmail())
-            .add("money",customer.getMoney())
-            .add("address", createJsonArray(customer.getAddress()));
-            return job.build();
-                    
-    }
-    public JsonArray createJsonArray(List<Address>listAddress){
-        JsonArrayBuilder jab = Json.createArrayBuilder();
-        for(Address a : listAddress){
-            jab.add(createJsonAddress(a));
-        }
-        return jab.build();
-    }
-    public JsonObject createJsonAddress(Address address){
+
+public class JsonUserBuilder {
+
+    public JsonObject createJsonUserObject(User user) {
+        JsonPersonBuilder jsonPersonBuilder = new JsonPersonBuilder();
         JsonObjectBuilder job = Json.createObjectBuilder();
-        job.add("id", address.getId())
-            .add("city",address.getCity())
-            .add("street", address.getStreet())
-            .add("house", address.getHouse())
-            .add("room", address.getRoom());
+        job.add("id", user.getId())
+                .add("login", user.getLogin())
+                .add("active",user.isActive())
+                .add("person", jsonPersonBuilder.createJsonPersonObject(user.getPerson()));
         return job.build();
     }
+    
 }

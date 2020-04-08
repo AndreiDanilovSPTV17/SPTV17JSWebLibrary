@@ -1,3 +1,4 @@
+
 import {httpModule} from './HttpModule.js';
 class UserModule{
     printRegistrationForm(){
@@ -40,23 +41,25 @@ class UserModule{
               "lastname": lastname,
               "email": email,
               "money": money,
+              "city": city,
               "street": street,
               "house": house,
               "room": room,
               "login": login,
               "password": password,
           }
-          httpModule.http({url:'createUser', options:{method:'POST',data: user}})
+
+          httpModule.http('createUser', 'POST', user)
                   .then(function(response){
-                      if(response === null || response === 'undefined'){
+                      if(response === null || response === undefined){
                           document.getElementById('info').innerHTML = 'Пользователя добавить неудалось';
                           userModule.printRegistrationForm(); 
                       }
-                      if(response.actionStatus !== 'true'){
+                      if(response.actionStatus === 'false'){
                           document.getElementById('info').innerHTML = 'Пользователя добавить неудалось';
                           userModule.printRegistrationForm(); 
                       }
-                      // запрос успешен
+
                       document.getElementById('info').innerHTML = 'Новый пользователь добавлен';
                       document.getElementById('content').innerHTML = '';
                   })

@@ -22,16 +22,20 @@ import session.PersonFacade;
 import session.UserFacade;
 import util.EncryptPass;
 
-
+/**
+ *
+ * @author Irina
+ */
 @WebServlet(name = "LoginController", urlPatterns = {
     "/createUser", 
     "/login", 
     "/logout",
-
+    
 })
 public class LoginController extends HttpServlet {
 @EJB private PersonFacade personFacade;
 @EJB private UserFacade userFacade;
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,7 +58,7 @@ public class LoginController extends HttpServlet {
                 String room = jsonObject.getString("room");
                 String login = jsonObject.getString("login");
                 String password = jsonObject.getString("password");
-
+                // -------- проверка на null и на "" ---------
                 if(null == firstname || "".equals(firstname)
                         || null == firstname || "".equals(firstname)
                         || null == lastname || "".equals(lastname)
@@ -66,7 +70,8 @@ public class LoginController extends HttpServlet {
                         || null == room || "".equals(room)
                         || null == login || "".equals(login)
                         || null == password || "".equals(password)){
-
+                    // если хотя бы одна переменная не инициирована
+                    // создаем строку в JSON формате и выходим из switch
                     job.add("actionStatus", "false")
                             .add("user","null")
                             .add("authStatus", "false")
@@ -77,10 +82,11 @@ public class LoginController extends HttpServlet {
                     }
                     break; 
                 }
-
+                // ----------- конец проверки -----------
+                // -------- Дальше работаем с валидными данными --------
                 Person person = null;
                 User user = null;
-                try {
+                try {// защищаем запись в базу от возможных ошибок
                     person = new Person(firstname, lastname, email, city, street, house, room);
                     personFacade.create(person);
                     String salts = ep.createSalts();
@@ -88,7 +94,7 @@ public class LoginController extends HttpServlet {
                     user = new User(login, password, salts, true, person);
                     userFacade.create(user);
                 } catch (Exception e) {
-                   
+                    // чтобы уйти от обращения к несуществующему объекту проверим его на существование
                     if(person != null && person.getId() != null){
                         personFacade.remove(person);
                     }
@@ -105,7 +111,7 @@ public class LoginController extends HttpServlet {
                     }
                     break; 
                 }
-             
+                //проверки пройдены, user и person созданы
                 job.add("actionStatus", "true")
                             .add("user","null")
                             .add("authStatus", "false")
@@ -122,7 +128,8 @@ public class LoginController extends HttpServlet {
                 password = jsonObject.getString("password");
                 if(null == login || "".equals(login)
                         || null == password || "".equals(password)){
-                   
+                    // если хотя бы одна переменная не инициирована
+                    // создаем строку в JSON формате и выходим из switch
                     job.add("actionStatus", "false")
                             .add("user","null")
                             .add("authStatus", "false")
@@ -170,15 +177,26 @@ public class LoginController extends HttpServlet {
                     }
                 break;
             case "/logout":
-
+                session = request.getSession(false);
+                if(session != null){
+                    session.invalidate();
+                }
+                job.add("actionStatus", "true")
+                            .add("user","null")
+                            .add("authStatus", "false")
+                            .add("data", "null");
+                try (Writer writer = new StringWriter()){
+                    Json.createWriter(writer).write(job.build());
+                    json = writer.toString();
+                }
                 break;
         }
-       
+
         if(json != null && !"".equals(json)){
             try (PrintWriter out = response.getWriter()) {
                 out.println(json);
             }
-
+            
         }
     }
 
@@ -197,14 +215,25 @@ public class LoginController extends HttpServlet {
         processRequest(request, response);
     }
 
-
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

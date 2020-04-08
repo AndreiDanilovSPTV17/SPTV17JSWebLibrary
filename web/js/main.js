@@ -1,12 +1,12 @@
 import {authModule} from './AuthModule.js';
-import {userModule} from './UserModule.js';
+
 document.getElementById('enter-menu').onclick=function(){
     toogleMenuActive('enter-menu');
     authModule.printLoginForm();
-    userModele.printRegistrationForm();
 }
 document.getElementById('sysout').onclick=function(){
     toogleMenuActive('sysout');
+    authModule.logout();
 }
 
 function toogleMenuActive(elementId){
@@ -22,3 +22,4 @@ function toogleMenuActive(elementId){
     }
   }
 }
+authModule.toogleVisibleMenus();

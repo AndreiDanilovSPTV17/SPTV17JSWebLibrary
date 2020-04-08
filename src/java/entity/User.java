@@ -9,10 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-/**
- *
- * @author Irina
- */
+
 @Entity
 public class User implements Serializable {
     @Id
@@ -28,7 +25,7 @@ public class User implements Serializable {
 
     public User() {
     }
-    // getttres and setters
+
     public User(String login, String password, String salts, boolean active, Person person) {
         this.login = login;
         this.password = password;
@@ -141,10 +138,4 @@ public class User implements Serializable {
                 + ", person=" + person.getFirstname()
                 + " " + person.getLastname()
                 + '}';
-    }
-
-
-
-
-
-}
+    }}

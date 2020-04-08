@@ -10,14 +10,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author dotkaseledka1
- */
 @Stateless
 public class PersonFacade extends AbstractFacade<Person> {
 
-    @PersistenceContext(unitName = "SPTV17JSWebLibraryPU")
+    @PersistenceContext(unitName = "SPTV17JSWebLibrary.PU")
     private EntityManager em;
 
     @Override
