@@ -13,12 +13,12 @@ class AuthModule {
                     <p class="card-text d-flex justify-content-between">Password: <input class="ml-2" type="password" id="password"></p>
                     <p class="card-text"><button class="btn btn-primary w-100 rounded-pill" type="button" id="btnEnter">Sign in</button</p>
                   </div>
-                  <p class="w-100 text-center">Don't have an account?<br><a id="registration" href="#">Register</a></p>
+                  <p class="w-100 text-center">Dont have an account?<br><a id="registration" href="#">Register</a></p>
                </div>
              </div>;`;
         document.getElementById('btnEnter').onclick = function () {
             authModule.auth();
-        }
+        };
         document.getElementById('registration').addEventListener('click', userModule.printRegistrationForm);
     }
     auth() {
@@ -27,14 +27,14 @@ class AuthModule {
         let credential = {
             "login": login,
             "password": password,
-        }
+        };
         httpModule.http('login', 'POST', credential)
                 .then(function (response) {
                     if (response === null || response === undefined) {
                         document.getElementById('info').innerHTML = 'Authorization failed';
                         return;
                     }
-                    if (response.authStatus == 'false') {
+                    if (response.authStatus === 'false') {
                         document.getElementById('info').innerHTML = 'Wrong login or password';
                         return;
                     }

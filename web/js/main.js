@@ -8,6 +8,9 @@ document.getElementById('sysout').onclick=function(){
     toogleMenuActive('sysout');
     authModule.logout();
 }
+document.getElementById('btnAddBook').onclick=function(){
+    toogleMenuActive('btnAddBook');
+    bookModule.printNewBookForm();
 
 function toogleMenuActive(elementId){
   let activeElement = document.getElementById(elementId);

@@ -1,23 +1,28 @@
 import {httpModule} from './HttpModule.js';
+import {userModule} from './UserModule.js';
         class BookModule {
         printNewBookForm() {
-        document.getElementById('content').innerHTML = `
-<div class="row mt-5">
+            document.getElementById('info').innerHTML='&nbsp;';
+        document.getElementById('content').innerHTML = 
+`<div class="row mt-5">
     <div class="col-sm-6 m-auto">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title w-100 text-center">Add Book</h5>
-                <p class="card-text w-100 text-center">Fill the fields</p>
+                <p class="card-text w-100 text-center">Fill every field</p>
                 <div class="input-group mb-3">
-                    <input id="name" type="text" class="form-control" placeholder="Title of the book" aria-label="Title of the book">
+                    <input id="name" type="text" class="form-control" placeholder="Book title" aria-label="Book title">
                 </div>
                 <div class="input-group mb-3">
                     <input id="author" type="text" class="form-control" placeholder="Book author" aria-label="Book author">
                 </div>
                 <div class="input-group mb-3">
-                    <input id="publishedYear" type="text" class="form-control" placeholder="The year of publishing" aria-label="The year of publishing">
+                    <input id="publishedYear" type="text" class="form-control" placeholder="Year" aria-label="Year">
                     <input id="quantity" type="text" class="form-control" placeholder="Quantity" aria-label="Quantity">
                     <input id="price" type="text" class="form-control" placeholder="Price" aria-label="Price">
+                </div>
+                <div class="input-group mb-3">
+                <textarea id= class="form-control" aria-label="Text" placeholder="text">
                 </div>
                 <a id="btnAddBook" href="#" class="btn btn-primary w-100">Add book</a>
             </div>
@@ -69,3 +74,59 @@ import {httpModule} from './HttpModule.js';
         }
 let bookModule = new BookModule();
         export {bookModule}
+        printListBook(){
+        httpModule.http('listbooks','GET')
+                .then(function(response){
+                    if(response === null || response === undefined) {
+                    document.getElementById('info').innerHTML='Server error';
+                    return;
+                    }
+                    if(response.authStatus === 'false'){
+                    document.getElementById('info').innerHTML='Log in';
+                    return;
+                    }
+                    if(response.actionStatus === 'false'){
+                    document.getElementById('info').innerHTML='';
+                    return;
+                    }
+                    
+        document.getElementById('content').innerHTML=
+            `<h2 class="w-100 text-center">Book list</h2>
+            <div id="boxBooks" class="row row-cols-1 row-cols-md-3 mt-4"></div>`
+        let boxBooks = document.getElementById('boxBooks');
+        let books = response.data;
+        for(let i=0;i< books.length;i++){
+        boxBooks.insertAdjacentHTML('afterbegin',
+            `<div class="cold mb-4">
+            <div class="card h-100" style="width: 18em;">
+            <img src="" class="card-img-top" alt="..." >
+            <div class="card-body">
+                <h5 class="card-title">${books[i].name}</h5>
+                <p class="card-text">${books[i].author}</p>
+                <p class="card-text">${books[i].price}</p>
+                <div class="card-footer d-flex justify-content-between">
+                <button id='btnToRead${books[i].id}' class="btn bg-primary">Read</button>
+                <button id='btnToRead${books[i].id}' class="btn bg-primary">Buy</button>
+               </div>
+               </div>
+               </div>
+               </div>`
+                    };   
+            document.getElementById('btnToRead'+books[i].id).onclick=function(){
+                bookModule.readBook(books[i].id);
+            }
+            document.getElementById('btnToBuy'+books[i].id).onclick=function(){
+                bookModule.buyBook(books[i].id);
+            }
+        }
+    });
+    }
+    readBook(bookId) {
+    console.log{'readBook.bookId='+bookId);
+    }
+    buyBook(bookId){
+        console.log('buyBook.bookId='+bookId);
+    }
+    }
+    
+
