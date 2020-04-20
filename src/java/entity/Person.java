@@ -10,23 +10,23 @@ import javax.persistence.Id;
 
 @Entity
 public class Person implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
-    private String email;
     @Column(unique = true)
+    private String email;
     private String city;
     private String street;
     private String house;
     private String room;
+    private int money;
 
     public Person() {
     }
 
-    public Person(String firstname, String lastname, String email, String city, String street, String house, String room) {
+    public Person(String firstname, String lastname, String email, String city, String street, String house, String room, int money) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -34,6 +34,7 @@ public class Person implements Serializable {
         this.street = street;
         this.house = house;
         this.room = room;
+        this.money = money;
     }
 
     public Long getId() {
@@ -103,14 +104,14 @@ public class Person implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.firstname);
-        hash = 97 * hash + Objects.hashCode(this.lastname);
-        hash = 97 * hash + Objects.hashCode(this.email);
-        hash = 97 * hash + Objects.hashCode(this.city);
-        hash = 97 * hash + Objects.hashCode(this.street);
-        hash = 97 * hash + Objects.hashCode(this.house);
-        hash = 97 * hash + Objects.hashCode(this.room);
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.firstname);
+        hash = 83 * hash + Objects.hashCode(this.lastname);
+        hash = 83 * hash + Objects.hashCode(this.email);
+        hash = 83 * hash + Objects.hashCode(this.city);
+        hash = 83 * hash + Objects.hashCode(this.street);
+        hash = 83 * hash + Objects.hashCode(this.house);
+        hash = 83 * hash + Objects.hashCode(this.room);
         return hash;
     }
 
@@ -158,4 +159,10 @@ public class Person implements Serializable {
         return "Person{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + ", city=" + city + ", street=" + street + ", house=" + house + ", room=" + room + '}';
     }
 
-}
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }}

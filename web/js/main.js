@@ -8,9 +8,14 @@ document.getElementById('sysout').onclick=function(){
     toogleMenuActive('sysout');
     authModule.logout();
 }
-document.getElementById('btnAddBook').onclick=function(){
+document.getElementById('printNewBookForm').onclick=function(){
     toogleMenuActive('btnAddBook');
     bookModule.printNewBookForm();
+}
+    document.getElementById('enter-menu').onclick=function(){
+    toogleMenuActive('printListBooksForm');
+    authModule.printListBooksForm();
+    }
 
 function toogleMenuActive(elementId){
   let activeElement = document.getElementById(elementId);

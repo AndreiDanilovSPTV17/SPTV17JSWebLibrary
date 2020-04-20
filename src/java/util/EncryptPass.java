@@ -8,7 +8,7 @@ import java.util.logging.Level;
 
 
 public class EncryptPass {
-    public String setEncriptPass(String password, String salts){
+    public String setEncryptPass(String password, String salts){
         password = salts + password;
         MessageDigest m;
         try {
